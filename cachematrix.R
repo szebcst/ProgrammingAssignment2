@@ -5,17 +5,17 @@
 # objects containing a list of four function. Later this object
 # can cache its inverse.
 
-## define x as an empty matrix and set i to NULL
+## defining x as an empty matrix object and setting i to NULL
 makeCacheMatrix <- function(x = matrix()) {
   i <- NULL
-  ## the set function. Y is assigned to x and i is set to NULL in
-  ## the parent environment
+  ## The setter. y is assigned to x and i is set to NULL in
+  # the parent environment. This is important in case i already has
+  # a value in the parent environment.
   set <- function(y) {
     x <<- y
     i <<- NULL
   }
-  ## this is the getter which can later be used for accessing the
-  # data
+  ## The getter can later be used for accessing the data
   get <- function() x
   ## creating a very short function for assigning 'inverse' to
   # i in the parent environment
@@ -23,7 +23,8 @@ makeCacheMatrix <- function(x = matrix()) {
   ## creating a very short function that can later be used to
   # retrieve data
   getinverse <- function() i
-  ## finally, a list of the four functions are created
+  ## finally, creating a list of the four functions. naming them
+  # will help to use them in the next function more easily.
   list(set = set, get = get,
        setinverse = setinverse,
        getinverse = getinverse)
@@ -34,11 +35,12 @@ makeCacheMatrix <- function(x = matrix()) {
 ## that was returned by makeCacheMatrix.
 
 cacheSolve <- function(x, ...) {
-  ## here data is accessed in x that is ideally the object
-  # returned by makeCacheMatrix
+  ## here, data is accessed in x (that is ideally the object
+  # returned by makeCacheMatrix)
   i <- x$getinverse()
   ## checking if the value is already cached. If it has already
-  # been computed then that value is returned.
+  # been computed then "!is.null(i))" is true and its value is
+  # returned.
   if(!is.null(i)) {
     message("getting cached data")
     return(i)
